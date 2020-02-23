@@ -43,4 +43,18 @@ bool writeTime(TIME_DATE_STRUCT time);
 bool writeDate(TIME_DATE_STRUCT date);
 bool writeTimeDate(TIME_DATE_STRUCT timeDate);
 
+int parseSeconds(byte secondsByte);
+int parseMinutes(byte minutesByte);
+int parseHours(byte hoursByte);
+int parseDays(byte daysByte);
+int parseMonths(byte monthsByte);
+int parseYears(byte yearsByte);
+
+byte toSecondsByte(int seconds);
+byte toMinutesByte(int minutes);
+byte toHoursByte(int hours);
+byte toSecondsByte(int seconds);
+byte toMonthsByte(int months);
+byte toYearsByte(int years);
+
 #endif
