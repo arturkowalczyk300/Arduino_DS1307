@@ -53,7 +53,7 @@ int parseYears(byte yearsByte);
 byte toSecondsByte(int seconds);
 byte toMinutesByte(int minutes);
 byte toHoursByte(int hours);
-byte toSecondsByte(int seconds);
+byte toDaysByte(int seconds);
 byte toMonthsByte(int months);
 byte toYearsByte(int years);
 

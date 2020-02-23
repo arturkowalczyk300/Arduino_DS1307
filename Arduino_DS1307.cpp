@@ -16,7 +16,7 @@ TIME_DATE_STRUCT readTime()
 	byte yearsByte;
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x00); //seconds register
+	Wire.write(0x00); //minutes register
 	Wire.endTransmission();
 	
 	delay(50);
@@ -34,7 +34,7 @@ TIME_DATE_STRUCT readTime()
 	}
 	
 	int hours=0, minutes=0, seconds=0, days=0, months=0, years=0;
-	//calculate seconds
+	//calculate minutes
 	seconds = parseSeconds(secondsByte);
 	minutes= parseMinutes(minutesByte);
 	hours = parseHours(hoursByte);
@@ -67,32 +67,32 @@ bool writeTimeDate(TIME_DATE_STRUCT timeDate)
 {
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x00);
-	Wire.write(timeDate.seconds);
+	Wire.write(toSecondsByte(timeDate.seconds));
 	Wire.endTransmission();
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x01);
-	Wire.write(timeDate.minutes);
+	Wire.write(toMinutesByte(timeDate.minutes));
 	Wire.endTransmission();
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x02);
-	Wire.write(timeDate.hours);
+	Wire.write(toHoursByte(timeDate.hours));
 	Wire.endTransmission();
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x04);
-	Wire.write(timeDate.day);
+	Wire.write(toDaysByte(timeDate.day));
 	Wire.endTransmission();
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x05);
-	Wire.write(timeDate.month);
+	Wire.write(toMonthsByte(timeDate.month));
 	Wire.endTransmission();
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x06);
-	Wire.write(timeDate.year);
+	Wire.write(toYearsByte(timeDate.year));
 	Wire.endTransmission();
 	return false;
 	
@@ -148,9 +148,93 @@ int parseYears(byte yearsByte)
 	return ((int)onlyTenYearsByte) * 10 + (int)onlyYearsByte;
 }
 
-byte toSecondsByte(int seconds);
-byte toMinutesByte(int minutes);
-byte toHoursByte(int hours);
-byte toSecondsByte(int seconds);
-byte toMonthsByte(int months);
-byte toYearsByte(int years);
+byte toSecondsByte(int seconds)
+{
+	byte toWrite=0;
+	
+	int units = seconds %10;
+	int tens = seconds/10.0;
+	
+	byte unitsByte = units;
+	byte tensByte = tens;
+	
+	toWrite |= tensByte;
+	toWrite <<= 4;
+	toWrite |= unitsByte;
+	return toWrite;
+}
+byte toMinutesByte(int minutes)
+{
+	byte toWrite=0;
+	
+	int units = minutes %10;
+	int tens = minutes/10.0;
+	
+	byte unitsByte = units;
+	byte tensByte = tens;
+	
+	toWrite |= tensByte;
+	toWrite <<= 4;
+	toWrite |= unitsByte;
+	return toWrite;
+}
+byte toHoursByte(int hours) //24 hour mode, bit 6 is low
+{
+	byte toWrite=0;
+	
+	int units = hours %10;
+	int tens = hours/10.0;
+	
+	byte unitsByte = units;
+	byte tensByte = tens;
+	
+	toWrite |= tensByte;
+	toWrite <<= 4;
+	toWrite |= unitsByte;
+	return toWrite;
+}
+byte toDaysByte(int days)
+{
+	byte toWrite=0;
+	
+	int units = days %10;
+	int tens = days/10.0;
+	
+	byte unitsByte = units;
+	byte tensByte = tens;
+	
+	toWrite |= tensByte;
+	toWrite <<= 4;
+	toWrite |= unitsByte;
+	return toWrite;
+}
+byte toMonthsByte(int months)
+{
+	byte toWrite=0;
+	
+	int units = months %10;
+	int tens = months/10.0;
+	
+	byte unitsByte = units;
+	byte tensByte = tens;
+	
+	toWrite |= tensByte;
+	toWrite <<= 4;
+	toWrite |= unitsByte;
+	return toWrite;
+}
+byte toYearsByte(int years)
+{
+	byte toWrite=0;
+	
+	int units = years %10;
+	int tens = years/10.0;
+	
+	byte unitsByte = units;
+	byte tensByte = tens;
+	
+	toWrite |= tensByte;
+	toWrite <<= 4;
+	toWrite |= unitsByte;
+	return toWrite;
+}
