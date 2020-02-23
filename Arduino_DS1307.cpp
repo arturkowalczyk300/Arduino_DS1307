@@ -96,6 +96,35 @@ bool writeDate(TIME_DATE_STRUCT date)
 }
 bool writeTimeDate(TIME_DATE_STRUCT timeDate)
 {
+	Wire.beginTransmission(SLAVE_ADDRESS);
+	Wire.write(0x00);
+	Wire.write(timeDate.seconds);
+	Wire.endTransmission();
+	
+	Wire.beginTransmission(SLAVE_ADDRESS);
+	Wire.write(0x01);
+	Wire.write(timeDate.minutes);
+	Wire.endTransmission();
+	
+	Wire.beginTransmission(SLAVE_ADDRESS);
+	Wire.write(0x02);
+	Wire.write(timeDate.hours);
+	Wire.endTransmission();
+	
+	Wire.beginTransmission(SLAVE_ADDRESS);
+	Wire.write(0x04);
+	Wire.write(timeDate.day);
+	Wire.endTransmission();
+	
+	Wire.beginTransmission(SLAVE_ADDRESS);
+	Wire.write(0x05);
+	Wire.write(timeDate.month);
+	Wire.endTransmission();
+	
+	Wire.beginTransmission(SLAVE_ADDRESS);
+	Wire.write(0x06);
+	Wire.write(timeDate.year);
+	Wire.endTransmission();
 	return false;
 	
 }
