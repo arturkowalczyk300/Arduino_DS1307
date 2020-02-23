@@ -6,23 +6,30 @@
 
 #define SLAVE_ADDRESS 0x68
 
+#define WRITE_SECONDS 0x01
+#define WRITE_MINUTES 0x02
+#define WRITE_HOURS 0x04
+#define WRITE_DAYS 0x08
+#define WRITE_MONTHS 0x10
+#define WRITE_YEARS 0x20
+#define WRITE_ALL 0x3F
 struct TIME_DATE_STRUCT
 {
 	unsigned int hours;
 	unsigned int minutes;
 	unsigned int seconds;
 	unsigned int hour;
-	unsigned int day;	
+	unsigned int day;
 	unsigned int month;
 	unsigned int year;
-		
+
 	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds)
 	{
 		this->hours = hours;
 		this->minutes = minutes;
 		this->seconds = seconds;
 	}
-	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds, unsigned int day, unsigned int month, unsigned int year )
+	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds, unsigned int day, unsigned int month, unsigned int year)
 	{
 		this->hours = hours;
 		this->minutes = minutes;
@@ -31,7 +38,6 @@ struct TIME_DATE_STRUCT
 		this->month = month;
 		this->year = year;
 	}
-	
 };
 
 bool testConnection();
@@ -39,22 +45,13 @@ TIME_DATE_STRUCT readTime();
 TIME_DATE_STRUCT readDate();
 TIME_DATE_STRUCT readTimeDate();
 
-bool writeTime(TIME_DATE_STRUCT time);
-bool writeDate(TIME_DATE_STRUCT date);
-bool writeTimeDate(TIME_DATE_STRUCT timeDate);
+bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte);
 
-int parseSeconds(byte secondsByte);
-int parseMinutes(byte minutesByte);
+int parseSecondsMinutes(byte rawByte);
 int parseHours(byte hoursByte);
 int parseDays(byte daysByte);
 int parseMonths(byte monthsByte);
 int parseYears(byte yearsByte);
 
-byte toSecondsByte(int seconds);
-byte toMinutesByte(int minutes);
-byte toHoursByte(int hours);
-byte toDaysByte(int seconds);
-byte toMonthsByte(int months);
-byte toYearsByte(int years);
-
+byte toRawByte(int value);
 #endif
