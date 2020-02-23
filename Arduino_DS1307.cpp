@@ -33,11 +33,38 @@ TIME_DATE_STRUCT readTime()
 		yearsByte = Wire.read();
 	}
 	
+	int hours=0, minutes=0, seconds=0, days=0, months=0, years=0;
 	//calculate seconds
 	byte onlySecondsByte = secondsByte & 0b00001111;
 	byte onlyTenSecondsByte = (secondsByte & 0b01110000) >> 4;
-	int hours=0, minutes=0, seconds=0, days=0, months=0, years=0;
 	seconds = ((int)onlyTenSecondsByte) * 10 + (int)onlySecondsByte;
+	
+	//calculate minutes 
+	byte onlyminutesByte = minutesByte & 0b00001111;
+	byte onlyTenminutesByte = (minutesByte & 0b01110000) >> 4;
+	minutes = ((int)onlyTenminutesByte) * 10 + (int)onlyminutesByte;
+	
+	//calculate hours
+	byte onlyhoursByte = hoursByte & 0b00001111;
+	byte onlyTenhoursByte = (hoursByte & 0b01110000) >> 4;
+	hours = ((int)onlyTenhoursByte) * 10 + (int)onlyhoursByte;
+	
+	
+	//calculate days
+	byte onlyDaysByte = daysByte & 0b00001111;
+	byte onlyTenDaysByte = (daysByte & 0b00110000) >> 4;
+	days = ((int)onlyTenDaysByte) * 10 + (int)onlyDaysByte;
+	
+	//calculate months
+	byte onlyMonthsByte = monthsByte & 0b00001111;
+	byte onlyTenMonthsByte = (monthsByte & 0b00010000) >> 4;
+	months = ((int)onlyTenMonthsByte) * 10 + (int)onlyMonthsByte;
+	
+	//calculate Years
+	byte onlyYearsByte = yearsByte & 0b00001111;
+	byte onlyTenYearsByte = (yearsByte & 0b11110000) >> 4;
+	years = ((int)onlyTenYearsByte) * 10 + (int)onlyYearsByte;
+	
 	
 	return TIME_DATE_STRUCT(hours, minutes, seconds, days, months, years);
 }
