@@ -46,9 +46,18 @@ TIME_DATE_STRUCT readTime()
 	
 	//calculate hours
 	byte onlyhoursByte = hoursByte & 0b00001111;
-	byte onlyTenhoursByte = (hoursByte & 0b01110000) >> 4;
-	hours = ((int)onlyTenhoursByte) * 10 + (int)onlyhoursByte;
-	
+	bool is12HourMode = (hoursByte & 0b01000000) >> 6; //if bit 6 is high, the mode is 12 hour
+	if(is12HourMode == false ) //24hour mode
+	{
+		byte onlyTenhoursByte = (hoursByte & 0b00110000) >> 4;
+		hours = ((int)onlyTenhoursByte) * 10 + (int)onlyhoursByte;
+	}
+	else  //12 hour mode
+	{
+		bool isPM = (hoursByte & 0b00100000) >> 5; //if high, time range is PM
+		byte onlyTenhoursByte = (hoursByte & 0b00010000) >> 4;
+		hours = ((int)onlyTenhoursByte) * 10 + (int)onlyhoursByte + (isPM ? 12 : 0 );
+	}
 	
 	//calculate days
 	byte onlyDaysByte = daysByte & 0b00001111;
