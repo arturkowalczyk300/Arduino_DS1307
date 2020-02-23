@@ -8,12 +8,12 @@ bool testConnection()
 
 TIME_DATE_STRUCT readTime()
 {
-	byte seconds;
-	byte minutes;
-	byte hours;
-	byte days;
-	byte months;
-	byte years;
+	byte secondsByte;
+	byte minutesByte;
+	byte hoursByte;
+	byte daysByte;
+	byte monthsByte;
+	byte yearsByte;
 	
 	Wire.beginTransmission(SLAVE_ADDRESS);
 	Wire.write(0x00); //seconds register
@@ -24,14 +24,20 @@ TIME_DATE_STRUCT readTime()
 	delay(50);
 	if(Wire.available()>=7)
 	{	
-		seconds = Wire.read();
-		minutes = Wire.read();
-		hours = Wire.read();
+		secondsByte = Wire.read();
+		minutesByte = Wire.read();
+		hoursByte = Wire.read();
 		Wire.read(); //skip day of week register
-		days = Wire.read();
-		months = Wire.read();
-		years = Wire.read();
+		daysByte = Wire.read();
+		monthsByte = Wire.read();
+		yearsByte = Wire.read();
 	}
+	
+	//calculate seconds
+	byte onlySecondsByte = secondsByte & 0b00001111;
+	byte onlyTenSecondsByte = (secondsByte & 0b01110000) >> 4;
+	int hours=0, minutes=0, seconds=0, days=0, months=0, years=0;
+	seconds = ((int)onlyTenSecondsByte) * 10 + (int)onlySecondsByte;
 	
 	return TIME_DATE_STRUCT(hours, minutes, seconds, days, months, years);
 }
