@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 
+#define SLAVE_ADDRESS 0x68
+
 struct TIME_DATE_STRUCT
 {
 	unsigned int hours;
@@ -14,8 +16,21 @@ struct TIME_DATE_STRUCT
 	unsigned int month;
 	unsigned int year;
 		
-	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds);
-	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds, unsigned int day, unsigned int month, unsigned int year );
+	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds)
+	{
+		this->hours = hours;
+		this->minutes = minutes;
+		this->seconds = seconds;
+	}
+	TIME_DATE_STRUCT(unsigned int hours, unsigned int minutes, unsigned int seconds, unsigned int day, unsigned int month, unsigned int year )
+	{
+		this->hours = hours;
+		this->minutes = minutes;
+		this->seconds = seconds;
+		this->day = day;
+		this->month = month;
+		this->year = year;
+	}
 	
 };
 
