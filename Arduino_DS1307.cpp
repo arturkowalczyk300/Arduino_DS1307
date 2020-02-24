@@ -54,35 +54,54 @@ TIME_DATE_STRUCT readTimeDate()
 
 bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte)
 {
-	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x00);
-	Wire.write(toRawByte(timeDate.seconds));
-	Wire.endTransmission();
+	if ((flagByte & WRITE_SECONDS) >= 1)
+	{
+		Wire.beginTransmission(SLAVE_ADDRESS);
+		Wire.write(0x00);
+		Wire.write(toRawByte(timeDate.seconds));
+		Wire.endTransmission();
+	}
 
-	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x01);
-	Wire.write(toRawByte(timeDate.minutes));
-	Wire.endTransmission();
+	if ((flagByte & WRITE_MINUTES) >= 1)
+	{
+		Wire.beginTransmission(SLAVE_ADDRESS);
+		Wire.write(0x01);
+		Wire.write(toRawByte(timeDate.minutes));
+		Wire.endTransmission();
+	}
 
-	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x02);
-	Wire.write(toRawByte(timeDate.hours));
-	Wire.endTransmission();
+	if ((flagByte & WRITE_HOURS) >= 1)
+	{
+		Wire.beginTransmission(SLAVE_ADDRESS);
+		Wire.write(0x02);
+		Wire.write(toRawByte(timeDate.hours));
+		Wire.endTransmission();
+	}
 
-	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x04);
-	Wire.write(toRawByte(timeDate.day));
-	Wire.endTransmission();
+	if ((flagByte & WRITE_DAYS) >= 1)
+	{
+		Wire.beginTransmission(SLAVE_ADDRESS);
+		Wire.write(0x04);
+		Wire.write(toRawByte(timeDate.day));
+		Wire.endTransmission();
+	}
 
-	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x05);
-	Wire.write(toRawByte(timeDate.month));
-	Wire.endTransmission();
+	if ((flagByte & WRITE_MONTHS) >= 1)
+	{
+		Wire.beginTransmission(SLAVE_ADDRESS);
+		Wire.write(0x05);
+		Wire.write(toRawByte(timeDate.month));
+		Wire.endTransmission();
+	}
 
-	Wire.beginTransmission(SLAVE_ADDRESS);
-	Wire.write(0x06);
-	Wire.write(toRawByte(timeDate.year));
-	Wire.endTransmission();
+	if ((flagByte & WRITE_YEARS) >= 1)
+	{
+		Wire.beginTransmission(SLAVE_ADDRESS);
+		Wire.write(0x06);
+		Wire.write(toRawByte(timeDate.year));
+		Wire.endTransmission();
+	}
+
 	return false;
 }
 
