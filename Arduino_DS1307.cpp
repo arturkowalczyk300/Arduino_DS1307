@@ -5,7 +5,7 @@ bool testConnection()
 	return false;
 }
 
-TIME_DATE_STRUCT readTime()
+TIME_DATE_STRUCT Arduino_DS1307::readTimeDate()
 {
 	byte secondsByte;
 	byte minutesByte;
@@ -43,16 +43,8 @@ TIME_DATE_STRUCT readTime()
 
 	return TIME_DATE_STRUCT(hours, minutes, seconds, days, months, years);
 }
-TIME_DATE_STRUCT readDate()
-{
-	return TIME_DATE_STRUCT(0, 0, 0, 2, 6, 1997);
-}
-TIME_DATE_STRUCT readTimeDate()
-{
-	return TIME_DATE_STRUCT(12, 30, 59, 2, 6, 1997);
-}
 
-bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte)
+bool Arduino_DS1307::writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte)
 {
 	if ((flagByte & WRITE_SECONDS) >= 1)
 	{
@@ -105,14 +97,14 @@ bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte)
 	return false;
 }
 
-int parseSecondsMinutes(byte rawByte)
+int Arduino_DS1307::parseSecondsMinutes(byte rawByte)
 {
 	byte unitsByte = rawByte & 0b00001111;
 	byte tensByte = (rawByte & 0b01110000) >> 4;
 	return ((int)tensByte) * 10 + (int)unitsByte;
 }
 
-int parseHours(byte hoursByte)
+int Arduino_DS1307::parseHours(byte hoursByte)
 {
 	int hours = 0;
 	byte onlyhoursByte = hoursByte & 0b00001111;
@@ -130,26 +122,26 @@ int parseHours(byte hoursByte)
 	}
 	return hours;
 }
-int parseDays(byte daysByte)
+int Arduino_DS1307::parseDays(byte daysByte)
 {
 	byte onlyDaysByte = daysByte & 0b00001111;
 	byte onlyTenDaysByte = (daysByte & 0b00110000) >> 4;
 	return ((int)onlyTenDaysByte) * 10 + (int)onlyDaysByte;
 }
-int parseMonths(byte monthsByte)
+int Arduino_DS1307::parseMonths(byte monthsByte)
 {
 	byte onlyMonthsByte = monthsByte & 0b00001111;
 	byte onlyTenMonthsByte = (monthsByte & 0b00010000) >> 4;
 	return ((int)onlyTenMonthsByte) * 10 + (int)onlyMonthsByte;
 }
-int parseYears(byte yearsByte)
+int Arduino_DS1307::parseYears(byte yearsByte)
 {
 	byte onlyYearsByte = yearsByte & 0b00001111;
 	byte onlyTenYearsByte = (yearsByte & 0b11110000) >> 4;
 	return ((int)onlyTenYearsByte) * 10 + (int)onlyYearsByte;
 }
 
-byte toRawByte(int value)
+byte Arduino_DS1307::toRawByte(int value)
 {
 	byte toWrite = 0;
 

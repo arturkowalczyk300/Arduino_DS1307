@@ -40,18 +40,19 @@ struct TIME_DATE_STRUCT
 	}
 };
 
-bool testConnection();
-TIME_DATE_STRUCT readTime();
-TIME_DATE_STRUCT readDate();
-TIME_DATE_STRUCT readTimeDate();
+class Arduino_DS1307
+{
+public:
+	bool testConnection();
+	TIME_DATE_STRUCT readTimeDate();
+	bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte);
 
-bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte);
+	int parseSecondsMinutes(byte rawByte);
+	int parseHours(byte hoursByte);
+	int parseDays(byte daysByte);
+	int parseMonths(byte monthsByte);
+	int parseYears(byte yearsByte);
 
-int parseSecondsMinutes(byte rawByte);
-int parseHours(byte hoursByte);
-int parseDays(byte daysByte);
-int parseMonths(byte monthsByte);
-int parseYears(byte yearsByte);
-
-byte toRawByte(int value);
+	byte toRawByte(int value);
+};
 #endif
