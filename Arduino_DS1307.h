@@ -13,6 +13,13 @@
 #define WRITE_MONTHS 0x10
 #define WRITE_YEARS 0x20
 #define WRITE_ALL 0x3F
+
+#define PARSE_SECONDS 0x01
+#define PARSE_MINUTES 0x02
+#define PARSE_HOURS 0x04
+#define PARSE_DAYS 0x08
+#define PARSE_MONTHS 0x10
+#define PARSE_YEARS 0x20
 struct TIME_DATE_STRUCT
 {
 	unsigned int hours;
@@ -47,11 +54,7 @@ public:
 	TIME_DATE_STRUCT readTimeDate();
 	bool writeTimeDate(TIME_DATE_STRUCT timeDate, byte flagByte);
 
-	int parseSecondsMinutes(byte rawByte);
-	int parseHours(byte hoursByte);
-	int parseDays(byte daysByte);
-	int parseMonths(byte monthsByte);
-	int parseYears(byte yearsByte);
+	int parse(byte rawByte, byte flagByte);
 
 	byte toRawByte(int value);
 };
